@@ -1,6 +1,6 @@
 var app = angular.module( 'bookmark', [ 'ngMaterial' ] );
 
-function _dflt( data, key, dlt ) {
+function _dflt( data, key, dft ) {
   if ( data && data[ key ] ) {
     return data[ key ];
   }
@@ -27,14 +27,29 @@ app.factory( 'BMarkSingleton', [ 'Category', 'Item',
 
     var data = [];
 
-    data.push( new Category({
+    var cate1 = new Category({
       title: 'Music',
       id: '1'
-    }));
+    });
 
-    data.push( new Category({
+    var cate2 = new Category({
       title: 'Math',
       id: '2'
+    })
+
+    data.push( cate1 );
+    data.push( cate2 );
+
+    cate1.add( new Item({
+      title: 'Link to material design',
+    }));
+
+    cate1.add( new Item({
+      title: 'Link to website',
+    }));
+
+    cate2.add( new Item({
+      title: 'Doing homework for someday',
     }));
 
     return {

@@ -49,11 +49,19 @@
                 <md-icon class="material-icons md-light md-48"> delete </md-icon>
               </md-button>
             </bm-subheader>
-            <md-list-item class="md-2-line" ng-repeat="item in cate.items">
+            <md-divider></md-divider>
+            <md-list-item class="md-1-line" ng-repeat="item in cate.items" layout="row">
               <!-- <img ng-src="{{item.face}}?{{$index}" class="md-avatar" alt="{{item.who}}"> -->
-              <div class="md-list-item-text" layout="column">
-                sdfdsfds
+              <div class="md-list-item-text">
+                <a class="bmItem" href="{{ item.url }}"> {{ $index + 1}}. {{ item.title }} </a>
               </div>
+              <span flex=""> </span>
+              <md-button class="md-icon-button item-hover">
+                <md-icon class="material-icons md-light md-48"> mode_edit </md-icon>
+              </md-button>
+              <md-button class="md-icon-button item-hover">
+                <md-icon class="material-icons md-light md-48"> close </md-icon>
+              </md-button>
             </md-list-item>
             <md-divider></md-divider>
           </gr>

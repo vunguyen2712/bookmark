@@ -1,0 +1,23 @@
+{
+  "name": "bookmark",
+  "version": "1.0.0",
+  "description": "App for organizing bookmarks",
+  "main": "app.js",
+  "scripts": {
+    "test": "mocha"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/vunguyen2712/bookmark.git"
+  },
+  "keywords": [
+    "bookmark",
+    "management"
+  ],
+  "author": "tuleph@gmail.com",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/vunguyen2712/bookmark/issues"
+  },
+  "homepage": "https://github.com/vunguyen2712/bookmark#readme"
+}

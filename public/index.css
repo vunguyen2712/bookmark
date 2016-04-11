@@ -7,6 +7,9 @@ body {
 }
 
 bm-subheader {
+  border-left-color: #605752;
+  border-left-style: solid;
+  border-left-width: 5px;
   padding: 5px 10px;
   color: #FD7B7E;
 }
@@ -19,4 +22,29 @@ bm-subheader span {
 
 bm-subheader md-icon {
   color: #FD7B7E;
+}
+
+md-list-item {
+  padding: 5px 10px;
+}
+
+md-list-item:hover {
+  background-color: #f7f7f7;
+}
+
+md-list-item:hover .item-hover {
+  visibility: visible;
+}
+
+.bmItem {
+  text-decoration: none;
+  color: #535851;
+}
+
+/*.bmItem:hover {
+  text-decoration: underline;;
+}*/
+
+.item-hover {
+  visibility: hidden;
 }

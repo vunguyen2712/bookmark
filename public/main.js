@@ -16,6 +16,12 @@ app.controller( 'BookmarkController', [ '$scope', 'BMarkSingleton',
 
 }]);
 
+app.filter( 'bmCapital', function() {
+  return function( input ) {
+    return input.toUpperCase();
+  };
+});
+
 app.factory( 'BMarkSingleton', [ 'Category', 'Item',
   function( Category, Item ) {
 

@@ -7,30 +7,67 @@ function _dflt( data, key, dft ) {
   return dft;
 }
 
-app.controller( 'BookmarkController', [ '$scope', 'BMarkSingleton', '$mdDialog', '$mdToast',
-  function( $scp, BMarkSgl, $mdDialog, $mdToast ) {
+app.controller( 'BookmarkController', [ '$scope', 'BMarkSingleton', 'Category','$mdDialog', '$mdToast',
+  function( $scp, BMarkSgl, Category, $mdDialog, $mdToast ) {
 
   $scp.title = "haha";
   $scp.data = [];
   $scp.data = BMarkSgl.getData();
 
-  $scp.addItem = function(ev) {
+  $scp.addCate = function(ev) {
     $mdDialog.show({
-      controller: addItemCtrl,
-      controllerAs: 'aic',
-      templateUrl: 'addItem.html',
+      controller: addCateCtrl,
+      controllerAs: 'acc',
+      templateUrl: 'addCate.html',
+      title: 'Add Category',
+      content: 'Add Category',
       targetEvent: ev,
       clickOutsideToClose:true
     })
-    .then(function(answer) {  // save goes here
-        var item = {
-            title: answer.what,
-            url: answer.where
+    .then(function(cateTitle) {  // save goes here
+
+      $scp.data.push( new Category({
+        title: cateTitle  // undefined because of input //TODO: fix this
+      }));
+
+      console.log(cateTitle);
+
+		$mdToast.show(
+		  $mdToast.simple()
+		    .content('Your category has been added!')
+		    .position('top right')
+		    .hideDelay(3000)
+		);
+
+    }, function() { // cancel goes here
+        console.log('You cancelled the dialog.');
+    });
+  };
+
+  $scp.addItem = function(ev) {
+    $mdDialog.show({
+      controller: addBmItemCtrl,
+      controllerAs: 'aic',
+      templateUrl: 'addItem.html',
+      title: 'Add item to Category X',
+      content: 'Add item to Category X',
+      targetEvent: ev,
+      clickOutsideToClose:true
+    })
+    .then(function(item) {  // save goes here
+        var bmItem = {
+            title: item.title,
+            url: item.url
         };
 
-        console.log(item);
+    console.log(bmItem);
 
-		$scp.data.push(item);
+    //TODO: dont know how to add item in a specific category
+		for (var i = 0; i <  $scp.length; ++i){
+      if ($scp.data[i].title === bmItem.title){
+        //$scp.data[i].add
+      }
+    }
 
 		$mdToast.show(
 		  $mdToast.simple()
@@ -46,15 +83,25 @@ app.controller( 'BookmarkController', [ '$scope', 'BMarkSingleton', '$mdDialog',
 
 }]);
 
-
-function addItemCtrl($scope, $mdDialog, $mdToast) {
+function addCateCtrl($scope, $mdDialog, $mdToast) {
     $scope.cancel = function (){
         $mdDialog.cancel();
     }
-    $scope.save = function(){
+    $scope.add = function(){
         $mdDialog.hide();
     }
 }
+
+function addBmItemCtrl($scope, $mdDialog, $mdToast) {
+    $scope.cancel = function (){
+        $mdDialog.cancel();
+    }
+    $scope.add = function(){
+        $mdDialog.hide();
+    }
+}
+
+
 
 app.filter( 'bmCapital', function() {
   return function( input ) {

@@ -32,7 +32,7 @@
           <span>Bookmark</span>
           <span flex=""> </span>
           <md-button class="md-icon-button">
-            <md-icon class="material-icons md-light md-48"> add </md-icon>
+            <md-icon class="material-icons md-light md-48" ng-click="addCate($event)"> add </md-icon>
           </md-button>
         </div>
       </md-toolbar>
@@ -43,7 +43,7 @@
               <span> {{ cate.title | bmCapital }} </span>
               <span flex=""> </span>
               <md-button class="md-icon-button">
-                <md-icon class="material-icons md-light md-48" ng-click="addItem()"> add_circle_outline </md-icon>
+                <md-icon class="material-icons md-light md-48" ng-click="addItem($event)"> add_circle_outline </md-icon>
               </md-button>
               <md-button class="md-icon-button">
                 <md-icon class="material-icons md-light md-48"> delete </md-icon>

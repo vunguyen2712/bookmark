@@ -55,14 +55,14 @@ app.controller( 'BookmarkController', [ '$scope', 'BMarkSingleton', 'Category', 
       targetEvent: ev,
       clickOutsideToClose:true
     })
-    .then( function( item ) {  // save goes here
+    .then( function( itemTitle, itemURL ) {  // save goes here
 
     //TODO: dont know how to add item in a specific category
-		for (var i = 0; i <  $scp.length; ++i){
+		for (var i = 0; i <  $scp.data.length; ++i){
       if ($scp.data[i].title === cate.title){
           $scp.data[i].add(new Item({
-            title: item.tempTitle,
-            url: item.tempURL
+            title: itemTitle,
+            url: itemURL
           }));
       }
     }
@@ -94,8 +94,8 @@ function addBmItemCtrl( $scope, $mdDialog, $mdToast ) {
     $scope.cancel = function (){
         $mdDialog.cancel();
     }
-    $scope.add = function( answer ){
-        $mdDialog.hide( $scope.tempTitle, $scope.tempURL );
+    $scope.add = function( itemTitle, itemURL ){
+        $mdDialog.hide( $scope.itemTitle, $scope.itemURL );
     }
 }
 

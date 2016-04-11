@@ -1,0 +1,19 @@
+{
+  "name": "public",
+  "homepage": "https://github.com/vunguyen2712/bookmark",
+  "description": "",
+  "main": "",
+  "license": "MIT",
+  "ignore": [
+    "**/.*",
+    "node_modules",
+    "bower_components",
+    "test",
+    "tests"
+  ],
+  "dependencies": {
+    "angular": "^1.5.3",
+    "angular-material": "^1.0.7",
+    "underscore": "^1.8.3"
+  }
+}

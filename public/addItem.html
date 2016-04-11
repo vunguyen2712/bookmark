@@ -1,0 +1,20 @@
+<md-dialog aria-label="Mango (Fruit)">
+	<md-content class="md-padding">
+		<form name="addForm"  >
+			<md-input-container flex>
+				<label>Title</label>
+				<input ng-model="todo.what" placeholder="Enter Bookmark title">
+			</md-input-container>
+			<md-input-container flex>
+				<label>URL</label>
+				<input ng-model="todo.where" placeholder="Enter URL">
+			</md-input-container>
+
+		</form>
+	</md-content>
+	<div class="md-actions" layout="row">
+		<span flex></span>
+		<md-button ng-click="cancel()"> Cancel </md-button>
+		<md-button ng-click="answer()" class="md-primary"> Save </md-button>
+ 	</div>
+</md-dialog>

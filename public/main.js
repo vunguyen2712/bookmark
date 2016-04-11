@@ -7,14 +7,53 @@ function _dflt( data, key, dlt ) {
   return dft;
 }
 
-app.controller( 'BookmarkController', [ '$scope', 'BMarkSingleton',
+app.controller( 'BookmarkController', [ '$scope', 'BMarkSingleton', '$mdDialog', '$mdToast',
   function( $scp, BMarkSgl ) {
 
   $scp.title = "haha";
   $scp.data = [];
   $scp.data = BMarkSgl.getData();
 
+  $scp.addItem = function(ev) {
+    $mdDialog.show({
+      controller: addItemCtrl,
+      controllerAs: 'aic',
+      templateUrl: 'addItem.html',
+      targetEvent: ev,
+      clickOutsideToClose:true
+    })
+    .then(function( answer) {  // save goes here
+        var item = {
+            title: answer.what,
+            url: answer.where
+        };
+
+        console.log(item);
+
+		$scp.todo.push(item);
+
+		$mdToast.show(
+		  $mdToast.simple()
+		    .content('Your item has been added!')
+		    .position('top right')
+		    .hideDelay(3000)
+		);
+
+    }, function() { // cancel goes here
+        console.log('You cancelled the dialog.');
+    });
+  };
+
 }]);
+
+function addItemCtrl($scp, $mdDialog, $mdToast) {
+    $scope.cancel = function (){
+        $mdDialog.cancel();
+    }
+    $scope.answer = function(){
+        $mdDialog.hide();
+    }
+}
 
 app.factory( 'BMarkSingleton', [ 'Category', 'Item',
   function( Category, Item ) {

@@ -57,15 +57,10 @@ app.controller( 'BookmarkController', [ '$scope', 'BMarkSingleton', 'Category', 
     })
     .then( function( itemTitle, itemURL ) {  // save goes here
 
-    //TODO: dont know how to add item in a specific category
-		for (var i = 0; i <  $scp.data.length; ++i){
-      if ($scp.data[i].title === cate.title){
-          $scp.data[i].add(new Item({
-            title: itemTitle,
-            url: itemURL
-          }));
-      }
-    }
+    cate.add(new Item({
+      title: itemTitle,
+      url: itemURL
+    }))
 
 		$mdToast.show(
 		  $mdToast.simple()

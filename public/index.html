@@ -21,6 +21,7 @@
     <link rel="stylesheet" type="text/css" href="bower_components/angular-material/angular-material.min.css">
     <script src="main.js"></script>
     <link rel="stylesheet" type="text/css" href="index.css">
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
 </head>
 <body ng-app="bookmark" ng-controller="BookmarkController">
   <div layout="row">
@@ -30,13 +31,24 @@
         <div class="md-toolbar-tools bm-toolbar">
           <span>Bookmark</span>
           <span flex=""> </span>
-          <i class="material-icons">delete</i>
+          <md-button class="md-icon-button">
+            <md-icon class="material-icons md-light md-48"> add </md-icon>
+          </md-button>
         </div>
       </md-toolbar>
       <md-content>
         <md-list flex="">
           <gr ng-repeat="cate in data">
-            <md-subheader class="md-no-sticky"> {{ cate.title }} </md-subheader>
+            <bm-subheader layout="row">
+              <span> {{ cate.title | bmCapital }} </span>
+              <span flex=""> </span>
+              <md-button class="md-icon-button">
+                <md-icon class="material-icons md-light md-48"> add_circle_outline </md-icon>
+              </md-button>
+              <md-button class="md-icon-button">
+                <md-icon class="material-icons md-light md-48"> delete </md-icon>
+              </md-button>
+            </bm-subheader>
             <md-list-item class="md-2-line" ng-repeat="item in cate.items">
               <!-- <img ng-src="{{item.face}}?{{$index}" class="md-avatar" alt="{{item.who}}"> -->
               <div class="md-list-item-text" layout="column">

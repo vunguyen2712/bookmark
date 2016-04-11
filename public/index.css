@@ -5,3 +5,18 @@ body {
 .bm-toolbar {
   background-color: #FD7B7E;
 }
+
+bm-subheader {
+  padding: 5px 10px;
+  color: #FD7B7E;
+}
+
+bm-subheader span {
+  font-size: 15px;
+  vertical-align: middle;
+  line-height: 3;
+}
+
+bm-subheader md-icon {
+  color: #FD7B7E;
+}

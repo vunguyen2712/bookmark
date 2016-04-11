@@ -46,6 +46,7 @@ app.controller( 'BookmarkController', [ '$scope', 'BMarkSingleton', '$mdDialog',
 
 }]);
 
+
 function addItemCtrl($scp, $mdDialog, $mdToast) {
     $scope.cancel = function (){
         $mdDialog.cancel();
@@ -54,6 +55,13 @@ function addItemCtrl($scp, $mdDialog, $mdToast) {
         $mdDialog.hide();
     }
 }
+
+app.filter( 'bmCapital', function() {
+  return function( input ) {
+    return input.toUpperCase();
+  };
+});
+
 
 app.factory( 'BMarkSingleton', [ 'Category', 'Item',
   function( Category, Item ) {

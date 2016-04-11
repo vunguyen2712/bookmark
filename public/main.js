@@ -7,14 +7,16 @@ function _dflt( data, key, dft ) {
   return dft;
 }
 
-app.controller( 'BookmarkController', [ '$scope', 'BMarkSingleton', 'Category','$mdDialog', '$mdToast',
-  function( $scp, BMarkSgl, Category, $mdDialog, $mdToast ) {
+app.controller( 'BookmarkController', [ '$scope', 'BMarkSingleton', 'Category', 'Item', '$mdDialog', '$mdToast',
+  function( $scp, BMarkSgl, Category, Item, $mdDialog, $mdToast ) {
 
+  $scp.itemTitle = "tempTitle";
+  $scp.itemURL = "tempURL";
   $scp.title = "haha";
   $scp.data = [];
   $scp.data = BMarkSgl.getData();
 
-  $scp.addCate = function(ev) {
+  $scp.addCate = function( ev ) {
     $mdDialog.show({
       controller: addCateCtrl,
       controllerAs: 'acc',
@@ -24,27 +26,26 @@ app.controller( 'BookmarkController', [ '$scope', 'BMarkSingleton', 'Category','
       targetEvent: ev,
       clickOutsideToClose:true
     })
-    .then(function(cateTitle) {  // save goes here
-
+    .then(function( cateTitle ) {
       $scp.data.push( new Category({
-        title: cateTitle  // undefined because of input //TODO: fix this
+        title: cateTitle
       }));
 
-      console.log(cateTitle);
+      console.log( cateTitle );
 
 		$mdToast.show(
 		  $mdToast.simple()
-		    .content('Your category has been added!')
-		    .position('top right')
-		    .hideDelay(3000)
+		    .content( 'Your category has been added!' )
+		    .position( 'top right' )
+		    .hideDelay( 3000 )
 		);
 
     }, function() { // cancel goes here
-        console.log('You cancelled the dialog.');
+        console.log( 'You cancelled the dialog.' );
     });
   };
 
-  $scp.addItem = function(ev) {
+  $scp.addItem = function( ev, cate ) {
     $mdDialog.show({
       controller: addBmItemCtrl,
       controllerAs: 'aic',
@@ -54,53 +55,49 @@ app.controller( 'BookmarkController', [ '$scope', 'BMarkSingleton', 'Category','
       targetEvent: ev,
       clickOutsideToClose:true
     })
-    .then(function(item) {  // save goes here
-        var bmItem = {
-            title: item.title,
-            url: item.url
-        };
-
-    console.log(bmItem);
+    .then( function( item ) {  // save goes here
 
     //TODO: dont know how to add item in a specific category
 		for (var i = 0; i <  $scp.length; ++i){
-      if ($scp.data[i].title === bmItem.title){
-        //$scp.data[i].add
+      if ($scp.data[i].title === cate.title){
+          $scp.data[i].add(new Item({
+            title: item.tempTitle,
+            url: item.tempURL
+          }));
       }
     }
 
 		$mdToast.show(
 		  $mdToast.simple()
-		    .content('Your item has been added!')
-		    .position('top right')
-		    .hideDelay(3000)
+		    .content( 'Your item has been added!' )
+		    .position( 'top right' )
+		    .hideDelay( 3000 )
 		);
 
     }, function() { // cancel goes here
-        console.log('You cancelled the dialog.');
+        console.log( 'You cancelled the dialog.' );
     });
   };
 
 }]);
 
-function addCateCtrl($scope, $mdDialog, $mdToast) {
+function addCateCtrl( $scope, $mdDialog, $mdToast ) {
     $scope.cancel = function (){
         $mdDialog.cancel();
     }
-    $scope.add = function(){
-        $mdDialog.hide();
+    $scope.add = function( answer ){
+        $mdDialog.hide( $scope.title );
     }
 }
 
-function addBmItemCtrl($scope, $mdDialog, $mdToast) {
+function addBmItemCtrl( $scope, $mdDialog, $mdToast ) {
     $scope.cancel = function (){
         $mdDialog.cancel();
     }
-    $scope.add = function(){
-        $mdDialog.hide();
+    $scope.add = function( answer ){
+        $mdDialog.hide( $scope.tempTitle, $scope.tempURL );
     }
 }
-
 
 
 app.filter( 'bmCapital', function() {

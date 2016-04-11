@@ -8,7 +8,7 @@ function _dflt( data, key, dlt ) {
 }
 
 app.controller( 'BookmarkController', [ '$scope', 'BMarkSingleton', '$mdDialog', '$mdToast',
-  function( $scp, BMarkSgl ) {
+  function( $scp, BMarkSgl, $mdDialog, $mdToast ) {
 
   $scp.title = "haha";
   $scp.data = [];
@@ -22,7 +22,7 @@ app.controller( 'BookmarkController', [ '$scope', 'BMarkSingleton', '$mdDialog',
       targetEvent: ev,
       clickOutsideToClose:true
     })
-    .then(function( answer) {  // save goes here
+    .then(function(answer) {  // save goes here
         var item = {
             title: answer.what,
             url: answer.where
@@ -30,7 +30,7 @@ app.controller( 'BookmarkController', [ '$scope', 'BMarkSingleton', '$mdDialog',
 
         console.log(item);
 
-		$scp.todo.push(item);
+		$scp.data.push(item);
 
 		$mdToast.show(
 		  $mdToast.simple()
@@ -47,11 +47,11 @@ app.controller( 'BookmarkController', [ '$scope', 'BMarkSingleton', '$mdDialog',
 }]);
 
 
-function addItemCtrl($scp, $mdDialog, $mdToast) {
+function addItemCtrl($scope, $mdDialog, $mdToast) {
     $scope.cancel = function (){
         $mdDialog.cancel();
     }
-    $scope.answer = function(){
+    $scope.save = function(){
         $mdDialog.hide();
     }
 }

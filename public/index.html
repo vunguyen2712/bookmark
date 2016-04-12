@@ -40,7 +40,7 @@
         <md-list flex="">
           <gr ng-repeat="cate in data">
             <bm-subheader layout="row">
-              <span> {{ cate.title | bmCapital }} </span>
+              <span> {{ cate.title | bmCapital }} ({{cate.items.length}})</span>
               <span flex=""> </span>
               <md-button class="md-icon-button">
                 <md-icon class="material-icons md-light md-48" ng-click="addItem($event, cate)"> add_circle_outline </md-icon>

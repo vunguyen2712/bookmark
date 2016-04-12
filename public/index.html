@@ -25,14 +25,24 @@
 </head>
 <body ng-app="bookmark" ng-controller="BookmarkController">
   <div layout="row">
-    <div flex="10"></div>
+    <div flex="50"></div>
+      <md-button class="md-icon-button" flex="10" ng-click="save($event)">
+        <md-icon class="material-icons md-light md-48" > cloud_upload </md-icon> Save
+      </md-button>
+      <md-button class="md-icon-button" flex="10" ng-click="load($event)">
+        <md-icon class="material-icons md-light md-48"> cloud_download </md-icon> Load
+      </md-button>
+  </div>
+
+  <div layout="row">
+    <div flex="20"></div>
     <div flex="60" >
       <md-toolbar layout="row">
         <div class="md-toolbar-tools bm-toolbar">
           <span>Bookmark</span>
           <span flex=""> </span>
-          <md-button class="md-icon-button">
-            <md-icon class="material-icons md-light md-48" ng-click="addCate($event)"> add </md-icon>
+          <md-button class="md-icon-button" ng-click="addCate($event)">
+            <md-icon class="material-icons md-light md-48" > add </md-icon>
           </md-button>
         </div>
       </md-toolbar>
@@ -42,14 +52,14 @@
             <bm-subheader layout="row">
               <span> {{ cate.title | bmCapital }} ({{cate.items.length}})</span>
               <span flex=""> </span>
-              <md-button class="md-icon-button">
-                <md-icon class="material-icons md-light md-48" ng-click="addItem($event, cate)"> add_circle_outline </md-icon>
+              <md-button class="md-icon-button" ng-click="addItem($event, cate)">
+                <md-icon class="material-icons md-light md-48"> add_circle_outline </md-icon>
               </md-button>
-              <md-button class="md-icon-button">
-                <md-icon class="material-icons md-light md-48" ng-click="renameCate($event, cate)"> mode_edit </md-icon>
+              <md-button class="md-icon-button" ng-click="renameCate($event, cate)">
+                <md-icon class="material-icons md-light md-48" > mode_edit </md-icon>
               </md-button>
-              <md-button class="md-icon-button">
-                <md-icon class="material-icons md-light md-48" ng-click="deleteCate($event, cate, $index)"> delete </md-icon>
+              <md-button class="md-icon-button" ng-click="deleteCate($event, cate, $index)">
+                <md-icon class="material-icons md-light md-48"> delete </md-icon>
               </md-button>
             </bm-subheader>
             <md-divider></md-divider>
@@ -59,11 +69,11 @@
                 <a class="bmItem" href="{{ item.url }}"> {{ $index + 1}}. {{ item.title }} </a>
               </div>
               <span flex=""> </span>
-              <md-button class="md-icon-button item-hover">
-                <md-icon class="material-icons md-light md-48" ng-click="editItem($event, cate, $index)"> mode_edit </md-icon>
+              <md-button class="md-icon-button item-hover" ng-click="editItem($event, cate, $index)">
+                <md-icon class="material-icons md-light md-48"> mode_edit </md-icon>
               </md-button>
-              <md-button class="md-icon-button item-hover">
-                <md-icon class="material-icons md-light md-48" ng-click="deleteItem($event, cate, $index)"> close </md-icon>
+              <md-button class="md-icon-button item-hover" ng-click="deleteItem($event, cate, $index)">
+                <md-icon class="material-icons md-light md-48"> close </md-icon>
               </md-button>
             </md-list-item>
             <md-divider></md-divider>

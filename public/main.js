@@ -15,8 +15,8 @@ app.controller( 'BookmarkController', [ '$scope', 'BMarkSingleton', 'Category', 
   $scp.data = BMarkSgl.getData();
 
   /*
-  * Add a category
-  */
+   * Add a category
+   */
   $scp.addCate = function( ev ) {
     $mdDialog.show({
       controller: addCateCtrl,
@@ -45,8 +45,8 @@ app.controller( 'BookmarkController', [ '$scope', 'BMarkSingleton', 'Category', 
   };
 
   /*
-  * Add an item
-  */
+   * Add an item
+   */
   $scp.addItem = function( ev, cate ) {
     $mdDialog.show({
       controller: addItemCtrl,
@@ -80,8 +80,8 @@ app.controller( 'BookmarkController', [ '$scope', 'BMarkSingleton', 'Category', 
   };
 
   /*
-  * Delete an item
-  */
+   * Delete an item
+   */
   $scp.deleteItem = function( ev, cate, index ) {
     $mdDialog.show({
       controller: deleteItemCtrl,
@@ -109,8 +109,8 @@ app.controller( 'BookmarkController', [ '$scope', 'BMarkSingleton', 'Category', 
   };
 
   /*
-  * Delete a Category
-  */
+   * Delete a Category
+   */
   $scp.deleteCate = function( ev, cate, index ) {
     $mdDialog.show({
       controller: deleteCateCtrl,
@@ -166,8 +166,8 @@ app.controller( 'BookmarkController', [ '$scope', 'BMarkSingleton', 'Category', 
   };
 
   /*
-  * Edit a bookmark
-  */
+   * Edit a bookmark
+   */
   $scp.editItem = function( ev, cate, index ) {
     $mdDialog.show({
       controller: editItemCtrl,
@@ -193,6 +193,61 @@ app.controller( 'BookmarkController', [ '$scope', 'BMarkSingleton', 'Category', 
         console.log( 'You cancelled the dialog.' );
     });
   };
+
+  /* =================================
+   * Save all data
+   * =================================
+   */
+  $scp.save = function( ev ) {
+    $mdDialog.show({
+      controller: saveCtrl,
+      controllerAs: 'sc',
+      templateUrl: 'save.html',
+      targetEvent: ev,
+      clickOutsideToClose:true,
+
+    })
+    .then( function(key) {
+      console.log("saving... with key: " + key);
+
+  		$mdToast.show(
+  		  $mdToast.simple()
+  		    .content( 'All has been saved!' )
+  		    .position( 'top right' )
+  		    .hideDelay( 3000 )
+  		);
+
+    }, function() {
+        console.log( 'You cancelled the dialog.' );
+    });
+  };
+  /* =================================
+   * Load data
+   * =================================
+   */
+   $scp.load = function( ev ) {
+     $mdDialog.show({
+       controller: loadCtrl,
+       controllerAs: 'lc',
+       templateUrl: 'load.html',
+       targetEvent: ev,
+       clickOutsideToClose:true,
+
+     })
+     .then( function(key) {
+       console.log("loading... with key: " + key);
+
+   		$mdToast.show(
+   		  $mdToast.simple()
+   		    .content( 'All has been loaded!' )
+   		    .position( 'top right' )
+   		    .hideDelay( 3000 )
+   		);
+
+     }, function() {
+         console.log( 'You cancelled the dialog.' );
+     });
+   };
 
 }]);
 
@@ -264,6 +319,26 @@ function editItemCtrl( $scope, $mdDialog, $mdToast, item ) {
     }
     $scope.save = function(){
         $mdDialog.hide(item);
+    }
+}
+
+function saveCtrl ( $scope, $mdDialog, $mdToast) {
+    $scope.ukey = '';
+    $scope.cancel = function (){
+        $mdDialog.cancel();
+    }
+    $scope.save = function(){
+        $mdDialog.hide($scope.ukey);
+    }
+}
+
+function loadCtrl ( $scope, $mdDialog, $mdToast) {
+    $scope.ukey = '';
+    $scope.cancel = function (){
+        $mdDialog.cancel();
+    }
+    $scope.load = function(){
+        $mdDialog.hide($scope.ukey);
     }
 }
 

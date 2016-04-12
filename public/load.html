@@ -1,0 +1,15 @@
+<md-dialog aria-label="Mango (Fruit)">
+	<md-content class="md-padding" layout="column">
+			<h3> Load </h3>
+      <p> Please enter your unique key to load your previous data. </p>
+			<md-input-container flex="">
+				<label>Unique Key</label>
+				<input ng-model="ukey" placeholder="Enter unique key">
+			</md-input-container>
+	</md-content>
+	<div class="md-dialog-actions" layout="row">
+		<span flex></span>
+		<md-button ng-click="cancel()"> Cancel </md-button>
+		<md-button ng-click="load()" class="md-primary"> Load </md-button>
+ 	</div>
+</md-dialog>

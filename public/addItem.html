@@ -1,17 +1,14 @@
 <md-dialog aria-label="Mango (Fruit)">
-	<md-content class="md-padding">
-    <h3> Add a bookmark </h3>
-		<form name="addItemForm">
-			<md-input-container flex>
+	<md-content class="md-padding" layout="column">
+    <h3> Add a bookmark in {{cate.title}} category</h3>
+			<md-input-container flex="">
 				<label>Title</label>
-				<input ng-model="itemTitle" placeholder="Enter Bookmark title">
+				<input ng-model="itemTitle" flex="" placeholder="Enter Bookmark title">
 			</md-input-container> <br>
 			<md-input-container flex>
 				<label>URL</label>
 				<input ng-model="itemURL" placeholder="Enter URL">
 			</md-input-container>
-
-		</form>
 	</md-content>
 	<div class="md-dialog-actions" layout="row">
 		<span flex></span>

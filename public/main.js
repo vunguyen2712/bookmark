@@ -16,6 +16,9 @@ app.controller( 'BookmarkController', [ '$scope', 'BMarkSingleton', 'Category', 
   $scp.data = [];
   $scp.data = BMarkSgl.getData();
 
+  /*
+  * Add a category
+  */
   $scp.addCate = function( ev ) {
     $mdDialog.show({
       controller: addCateCtrl,
@@ -45,15 +48,21 @@ app.controller( 'BookmarkController', [ '$scope', 'BMarkSingleton', 'Category', 
     });
   };
 
+  /*
+  * Add an item
+  */
   $scp.addItem = function( ev, cate ) {
     $mdDialog.show({
-      controller: addBmItemCtrl,
+      controller: addItemCtrl,
       controllerAs: 'aic',
       templateUrl: 'addItem.html',
       title: 'Add item to Category X',
       content: 'Add item to Category X',
       targetEvent: ev,
-      clickOutsideToClose:true
+      clickOutsideToClose:true,
+      locals:{
+        cate: cate
+      }
     })
     .then( function( itemTitle, itemURL ) {  // save goes here
 
@@ -203,7 +212,8 @@ function addCateCtrl( $scope, $mdDialog, $mdToast ) {
     }
 }
 
-function addBmItemCtrl( $scope, $mdDialog, $mdToast ) {
+function addItemCtrl( $scope, $mdDialog, $mdToast, cate ) {
+    $scope.cate = cate;
     $scope.cancel = function (){
         $mdDialog.cancel();
     }

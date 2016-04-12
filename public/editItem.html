@@ -1,0 +1,20 @@
+<md-dialog aria-label="Mango (Fruit)">
+	<md-content class="md-padding">
+		<h3>Edit Item</h3>
+    <form name="editItemForm">
+			<md-input-container flex>
+				<label>Bookmark Title</label>
+        <input ng-model="item.title" >
+			</md-input-container><br>
+      <md-input-container flex>
+        <label>URL</label>
+        <input ng-model="item.url" >
+      </md-input-container>
+		</form>
+	</md-content>
+	<div class="md-dialog-actions" layout="row">
+		<span flex></span>
+		<md-button ng-click="cancel()"> Cancel </md-button>
+		<md-button ng-click="save()" class="md-primary"> Save </md-button>
+ 	</div>
+</md-dialog>

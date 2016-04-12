@@ -93,7 +93,7 @@ app.controller( 'BookmarkController', [ '$scope', 'BMarkSingleton', 'Category', 
 
   		$mdToast.show(
   		  $mdToast.simple()
-  		    .content( 'Your item has been deleted!' )
+  		    .content( 'Your item has been successfully deleted!' )
   		    .position( 'top right' )
   		    .hideDelay( 3000 )
   		);
@@ -122,7 +122,7 @@ app.controller( 'BookmarkController', [ '$scope', 'BMarkSingleton', 'Category', 
 
   		$mdToast.show(
   		  $mdToast.simple()
-  		    .content( 'Your category has been deleted!' )
+  		    .content( 'Your category has been successfully deleted!' )
   		    .position( 'top right' )
   		    .hideDelay( 3000 )
   		);
@@ -152,7 +152,37 @@ app.controller( 'BookmarkController', [ '$scope', 'BMarkSingleton', 'Category', 
 
   		$mdToast.show(
   		  $mdToast.simple()
-  		    .content( 'Your category name has been changed!' )
+  		    .content( 'Your category name has been successfully changed!' )
+  		    .position( 'top right' )
+  		    .hideDelay( 3000 )
+  		);
+
+    }, function() {
+        console.log( 'You cancelled the dialog.' );
+    });
+  };
+
+  /*
+  * Edit a bookmark
+  */
+  $scp.editItem = function( ev, cate, index ) {
+    $mdDialog.show({
+      controller: editItemCtrl,
+      controllerAs: 'eic',
+      templateUrl: 'editItem.html',
+      targetEvent: ev,
+      clickOutsideToClose:true,
+      locals:{
+        item: cate.items[index]
+      }
+    })
+    .then( function(item) {
+      cate.items[index] = item;
+      console.log('item has changed to: ' + cate.items[index].title + ' ' + cate.items[index].url);
+
+  		$mdToast.show(
+  		  $mdToast.simple()
+  		    .content( 'Your bookmark has been successfully changed!' )
   		    .position( 'top right' )
   		    .hideDelay( 3000 )
   		);
@@ -214,6 +244,17 @@ function renameCateCtrl( $scope, $mdDialog, $mdToast, cateTitle ) {
     }
     $scope.rename = function(){
         $mdDialog.hide($scope.cateTitle);
+    }
+}
+
+function editItemCtrl( $scope, $mdDialog, $mdToast, item ) {
+    $scope.item = item;
+    console.log('inside editItemCtrl: ' + $scope.item);
+    $scope.cancel = function (){
+        $mdDialog.cancel();
+    }
+    $scope.save = function(){
+        $mdDialog.hide(item);
     }
 }
 

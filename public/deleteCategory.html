@@ -1,0 +1,11 @@
+<md-dialog aria-label="Mango (Fruit)">
+	<md-content class="md-padding">
+		<h3>Do you really want to delete {{cateTitle}} category?</h3>
+    <p> Please note that all bookmarks in your {{cateTitle}} category will be deleted </p>
+	</md-content>
+	<div class="md-dialog-actions" layout="row">
+		<span flex></span>
+		<md-button ng-click="cancel()"> Cancel </md-button>
+		<md-button ng-click="delete()" class="md-warn"> Delete </md-button>
+ 	</div>
+</md-dialog>

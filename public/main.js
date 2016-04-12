@@ -74,6 +74,64 @@ app.controller( 'BookmarkController', [ '$scope', 'BMarkSingleton', 'Category', 
     });
   };
 
+  /*
+  * Delete an item
+  */
+  $scp.deleteItem = function( ev, cate, index ) {
+    $mdDialog.show({
+      controller: deleteItemCtrl,
+      controllerAs: 'dic',
+      templateUrl: 'deleteItem.html',
+      targetEvent: ev,
+      locals: {
+        itemTitle: cate.items[index].title
+      },
+      clickOutsideToClose:true
+    })
+    .then( function() {  // save goes here
+      cate.items.splice(index, 1);
+
+  		$mdToast.show(
+  		  $mdToast.simple()
+  		    .content( 'Your item has been deleted!' )
+  		    .position( 'top right' )
+  		    .hideDelay( 3000 )
+  		);
+
+    }, function() { // cancel goes here
+        console.log( 'You cancelled the dialog.' );
+    });
+  };
+
+  /*
+  * Delete a Category
+  */
+  $scp.deleteCate = function( ev, cate, index ) {
+    $mdDialog.show({
+      controller: deleteCateCtrl,
+      controllerAs: 'dcc',
+      templateUrl: 'deleteCategory.html',
+      targetEvent: ev,
+      clickOutsideToClose:true,
+      locals: {
+        cateTitle: cate.title
+      },
+    })
+    .then( function() {
+      $scp.data.splice(index, 1);
+
+  		$mdToast.show(
+  		  $mdToast.simple()
+  		    .content( 'Your category has been deleted!' )
+  		    .position( 'top right' )
+  		    .hideDelay( 3000 )
+  		);
+
+    }, function() {
+        console.log( 'You cancelled the dialog.' );
+    });
+  };
+
 }]);
 
 function addCateCtrl( $scope, $mdDialog, $mdToast ) {
@@ -94,6 +152,29 @@ function addBmItemCtrl( $scope, $mdDialog, $mdToast ) {
     }
 }
 
+function deleteItemCtrl( $scope, $mdDialog, $mdToast, itemTitle ) {
+
+    console.log('inside deleteItem Ctrl: ' + itemTitle);
+    $scope.itemTitle = itemTitle;
+
+    $scope.cancel = function (){
+        $mdDialog.cancel();
+    }
+    $scope.delete = function(){
+        $mdDialog.hide();
+    }
+}
+
+function deleteCateCtrl( $scope, $mdDialog, $mdToast, cateTitle ) {
+    console.log('inside deleteCateCtrl: ' +  cateTitle);
+    $scope.cateTitle = cateTitle;
+    $scope.cancel = function (){
+        $mdDialog.cancel();
+    }
+    $scope.delete = function(){
+        $mdDialog.hide();
+    }
+}
 
 app.filter( 'bmCapital', function() {
   return function( input ) {

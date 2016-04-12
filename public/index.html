@@ -46,7 +46,7 @@
                 <md-icon class="material-icons md-light md-48" ng-click="addItem($event, cate)"> add_circle_outline </md-icon>
               </md-button>
               <md-button class="md-icon-button">
-                <md-icon class="material-icons md-light md-48"> delete </md-icon>
+                <md-icon class="material-icons md-light md-48" ng-click="deleteCate($event, cate, $index)"> delete </md-icon>
               </md-button>
             </bm-subheader>
             <md-divider></md-divider>
@@ -60,7 +60,7 @@
                 <md-icon class="material-icons md-light md-48"> mode_edit </md-icon>
               </md-button>
               <md-button class="md-icon-button item-hover">
-                <md-icon class="material-icons md-light md-48"> close </md-icon>
+                <md-icon class="material-icons md-light md-48" ng-click="deleteItem($event, cate, $index)"> close </md-icon>
               </md-button>
             </md-list-item>
             <md-divider></md-divider>

@@ -132,6 +132,36 @@ app.controller( 'BookmarkController', [ '$scope', 'BMarkSingleton', 'Category', 
     });
   };
 
+  /*
+  * Rename a category
+  */
+  $scp.renameCate = function( ev, cate ) {
+    $mdDialog.show({
+      controller: renameCateCtrl,
+      controllerAs: 'rcc',
+      templateUrl: 'renameCate.html',
+      targetEvent: ev,
+      clickOutsideToClose:true,
+      locals:{
+        cateTitle: cate.title
+      }
+    })
+    .then( function(newTitle) {
+      cate.title = newTitle;
+      console.log('newTitle: ' + newTitle);
+
+  		$mdToast.show(
+  		  $mdToast.simple()
+  		    .content( 'Your category name has been changed!' )
+  		    .position( 'top right' )
+  		    .hideDelay( 3000 )
+  		);
+
+    }, function() {
+        console.log( 'You cancelled the dialog.' );
+    });
+  };
+
 }]);
 
 function addCateCtrl( $scope, $mdDialog, $mdToast ) {
@@ -173,6 +203,17 @@ function deleteCateCtrl( $scope, $mdDialog, $mdToast, cateTitle ) {
     }
     $scope.delete = function(){
         $mdDialog.hide();
+    }
+}
+
+function renameCateCtrl( $scope, $mdDialog, $mdToast, cateTitle ) {
+    console.log('inside deleteCateCtrl: ' +  cateTitle);
+    $scope.cateTitle = cateTitle;
+    $scope.cancel = function (){
+        $mdDialog.cancel();
+    }
+    $scope.rename = function(){
+        $mdDialog.hide($scope.cateTitle);
     }
 }
 

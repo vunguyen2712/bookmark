@@ -1,17 +1,15 @@
 <md-dialog aria-label="Mango (Fruit)">
 	<md-content class="md-padding">
-		<h3> Add a category </h3>
 		<form name="addForm">
 			<md-input-container flex>
-				<label>Category Name</label>
-				<input ng-model="title" placeholder="Enter category name">
-			</md-input-container>
-
+				<label>Category Title</label>
+				<input ng-model="cateTitle" >
+			</md-input-container> <br>
 		</form>
 	</md-content>
 	<div class="md-dialog-actions" layout="row">
 		<span flex></span>
 		<md-button ng-click="cancel()"> Cancel </md-button>
-		<md-button ng-click="add()" class="md-primary"> Add </md-button>
+		<md-button ng-click="rename()" class="md-primary"> Add </md-button>
  	</div>
 </md-dialog>

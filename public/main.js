@@ -181,7 +181,7 @@ app.controller( 'BookmarkController', [ '$scope', 'BMarkSingleton', 'Category', 
     })
     .then( function(item) {
       cate.items[index] = item;
-      
+
   		$mdToast.show(
   		  $mdToast.simple()
   		    .content( 'Your bookmark has been successfully changed!' )

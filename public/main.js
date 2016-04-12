@@ -32,14 +32,12 @@ app.controller( 'BookmarkController', [ '$scope', 'BMarkSingleton', 'Category', 
         title: cateTitle
       }));
 
-      console.log( cateTitle );
-
-		$mdToast.show(
-		  $mdToast.simple()
-		    .content( 'Your category has been added!' )
-		    .position( 'top right' )
-		    .hideDelay( 3000 )
-		);
+  		$mdToast.show(
+  		  $mdToast.simple()
+  		    .content( 'Your category has been added!' )
+  		    .position( 'top right' )
+  		    .hideDelay( 3000 )
+  		);
 
     }, function() { // cancel goes here
         console.log( 'You cancelled the dialog.' );
@@ -62,19 +60,19 @@ app.controller( 'BookmarkController', [ '$scope', 'BMarkSingleton', 'Category', 
         cate: cate
       }
     })
-    .then( function( itemTitle, itemURL ) {
+    .then( function( item ) {
 
-    cate.add(new Item({
-      title: itemTitle,
-      url: itemURL
-    }));
+      cate.add(new Item({
+        title: item.title,
+        url: item.url
+      }));
 
-		$mdToast.show(
-		  $mdToast.simple()
-		    .content( 'Your item has been added!' )
-		    .position( 'top right' )
-		    .hideDelay( 3000 )
-		);
+  		$mdToast.show(
+  		  $mdToast.simple()
+  		    .content( 'Your item has been added!' )
+  		    .position( 'top right' )
+  		    .hideDelay( 3000 )
+  		);
 
     }, function() { // cancel goes here
         console.log( 'You cancelled the dialog.' );
@@ -155,8 +153,6 @@ app.controller( 'BookmarkController', [ '$scope', 'BMarkSingleton', 'Category', 
     })
     .then( function(newTitle) {
       cate.title = newTitle;
-      console.log('newTitle: ' + newTitle);
-
   		$mdToast.show(
   		  $mdToast.simple()
   		    .content( 'Your category name has been successfully changed!' )
@@ -185,8 +181,7 @@ app.controller( 'BookmarkController', [ '$scope', 'BMarkSingleton', 'Category', 
     })
     .then( function(item) {
       cate.items[index] = item;
-      console.log('item has changed to: ' + cate.items[index].title + ' ' + cate.items[index].url);
-
+      
   		$mdToast.show(
   		  $mdToast.simple()
   		    .content( 'Your bookmark has been successfully changed!' )
@@ -210,16 +205,19 @@ function addCateCtrl( $scope, $mdDialog, $mdToast ) {
     }
 }
 
-function addItemCtrl( $scope, $mdDialog, $mdToast, cate ) {
+function addItemCtrl( $scope, $mdDialog, $mdToast, cate, Item ) {
     $scope.cate = cate;
-    $scope.itemTitle;
-    $scope.itemURL;
+    $scope.item = {
+      title: '',
+      url: ''
+    };
 
     $scope.cancel = function (){
         $mdDialog.cancel();
     }
+
     $scope.add = function(){
-        $mdDialog.hide( $scope.itemTitle, $scope.itemURL );
+        $mdDialog.hide( $scope.item );
     }
 }
 

@@ -10,8 +10,6 @@ function _dflt( data, key, dft ) {
 app.controller( 'BookmarkController', [ '$scope', 'BMarkSingleton', 'Category', 'Item', '$mdDialog', '$mdToast',
   function( $scp, BMarkSgl, Category, Item, $mdDialog, $mdToast ) {
 
-  $scp.itemTitle = "tempTitle";
-  $scp.itemURL = "tempURL";
   $scp.title = "haha";
   $scp.data = [];
   $scp.data = BMarkSgl.getData();
@@ -64,12 +62,12 @@ app.controller( 'BookmarkController', [ '$scope', 'BMarkSingleton', 'Category', 
         cate: cate
       }
     })
-    .then( function( itemTitle, itemURL ) {  // save goes here
+    .then( function( itemTitle, itemURL ) {
 
     cate.add(new Item({
       title: itemTitle,
       url: itemURL
-    }))
+    }));
 
 		$mdToast.show(
 		  $mdToast.simple()
@@ -214,10 +212,13 @@ function addCateCtrl( $scope, $mdDialog, $mdToast ) {
 
 function addItemCtrl( $scope, $mdDialog, $mdToast, cate ) {
     $scope.cate = cate;
+    $scope.itemTitle;
+    $scope.itemURL;
+
     $scope.cancel = function (){
         $mdDialog.cancel();
     }
-    $scope.add = function( itemTitle, itemURL ){
+    $scope.add = function(){
         $mdDialog.hide( $scope.itemTitle, $scope.itemURL );
     }
 }

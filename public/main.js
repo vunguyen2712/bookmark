@@ -52,8 +52,6 @@ app.controller( 'BookmarkController', [ '$scope', 'BMarkSingleton', 'Category', 
       controller: addItemCtrl,
       controllerAs: 'aic',
       templateUrl: 'addItem.html',
-      title: 'Add item to Category X',
-      content: 'Add item to Category X',
       targetEvent: ev,
       clickOutsideToClose:true,
       locals:{
@@ -356,12 +354,14 @@ app.factory( 'BMarkSingleton', [ 'Category', 'Item',
 
     var cate1 = new Category({
       title: 'Music',
-      id: '1'
+      id: '1',
+      __expand: false
     });
 
     var cate2 = new Category({
       title: 'Math',
-      id: '2'
+      id: '2',
+      __expand: false
     })
 
     data.push( cate1 );
@@ -392,6 +392,7 @@ app.factory( 'Category', [ function() {
     this.title = _dflt( data, 'title', 'No title' );
     this.id = _dflt( data, 'id', '' );
     this.items = [];
+    this.__expand = _dflt( data, '__expand', false );
   }
 
   var methods = Category.prototype;

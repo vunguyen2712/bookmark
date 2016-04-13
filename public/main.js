@@ -1,4 +1,4 @@
-var app = angular.module( 'bookmark', [ 'ngMaterial' ] );
+var app = angular.module( 'bookmark', [ 'ngMaterial','ngAnimate' ] );
 
 function _dflt( data, key, dft ) {
   if ( data && data[ key ] ) {

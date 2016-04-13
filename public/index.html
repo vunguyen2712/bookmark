@@ -51,10 +51,10 @@
           <gr ng-repeat="cate in data">
             <bm-subheader layout="row">
               <span> {{ cate.title | bmCapital }} ({{cate.items.length}})
-                <md-button class="md-icon-button" ng-click="cate.__expand = !cate.__expand" ng-show="cate.__expand">
+                <md-button class="md-icon-button" ng-click="cate.__expand = !cate.__expand" ng-show="cate.__expand" ng-animate=" 'animate' " aria-label="Expand Less Button">
                   <md-icon class="material-icons md-light md-48"> expand_less </md-icon>
                 </md-button>
-                <md-button class="md-icon-button" ng-click="cate.__expand = !cate.__expand" ng-show="!cate.__expand">
+                <md-button class="md-icon-button" ng-click="cate.__expand = !cate.__expand" ng-show="!cate.__expand" ng-animate=" 'animate' " aria-label="Expand More Button">
                   <md-icon class="material-icons md-light md-48"> expand_more </md-icon>
                 </md-button>
               </span>
@@ -70,7 +70,7 @@
               </md-button>
             </bm-subheader>
             <md-divider></md-divider>
-            <md-list-item class="md-1-line" ng-repeat="item in cate.items" layout="row">
+            <md-list-item class="md-1-line" ng-repeat="item in cate.items" layout="row" ng-show="cate.__expand">
               <!-- <img ng-src="{{item.face}}?{{$index}" class="md-avatar" alt="{{item.who}}"> -->
               <div class="md-list-item-text">
                 <a class="bmItem" href="{{ item.url }}"> {{ $index + 1}}. {{ item.title }} </a>

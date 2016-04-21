@@ -123,7 +123,7 @@ function updateCategoryById( data, _callback ) {
           // have to match the same account_id
           _cate.save( function( err_cate ) {
             if ( err_cate ) {
-              ( _callback || _u.noop )( _err, 'Cannot update the category.' );
+              ( _callback || _u.noop )( err_cate, 'Cannot update the category.' );
             } else {
               ( _callback || _u.noop )( null, 'Update category successfully.' );
             }
@@ -264,6 +264,7 @@ app.post( '/authenticate', function( req, res ) {
 app.use( function( req, res, next ) {
   var token = req.body.token || req.query.token ||
     req.headers['x-access-token'];
+    console.log( token );
   if( token ) {
     jwt.verify( token, mySecret, function( err, decoded ) {
       if ( err ) {
@@ -287,13 +288,16 @@ app.use( function( req, res, next ) {
 
 // create category
 app.post( '/category', function( req, res ) {
-  var data = req.body.data;
+  var data = req.body;
   if ( data ) {
+    console.log( req.decoded );
     data.account_id = req.decoded.account_id;
   }
+  console.log( data );
   if ( validate_create_cate( data ) ) {
     createCategory( data, function( err, rlt ) {
       if ( err ) {
+        console.log( err );
         res.json({
           status: 'FAIL',
           message: 'Cannot create category.'
@@ -306,6 +310,7 @@ app.post( '/category', function( req, res ) {
       }
     });
   } else {
+    console.log( 'here' );
     res.json({
       status: 'FAIL',
       message: 'Cannot create category.'
@@ -314,8 +319,9 @@ app.post( '/category', function( req, res ) {
 });
 
 function validate_create_cate( data ) {
-  if ( !data) return false;
-  return !data.name && !data.description && !data.account_id;
+  if ( !data )
+    return false;
+  return data.name && data.description && data.account_id;
 }
 
 // get all category
@@ -348,6 +354,7 @@ app.put( '/category/:id', function( req, res ) {
     items: data.items
   }, function( err, rlt ) {
     if ( err ) {
+      console.log( err );
       res.json({
         status: 'FAIL',
         message: 'Cannot update'

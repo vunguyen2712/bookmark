@@ -7,12 +7,13 @@ function _dflt( data, key, dft ) {
   return dft;
 }
 
-app.controller( 'BookmarkController', [ '$scope', 'BMarkSingleton', 'Category', 'Item', '$mdDialog', '$mdToast',
-  function( $scp, BMarkSgl, Category, Item, $mdDialog, $mdToast ) {
+app.controller( 'BookmarkController', [ '$scope', 'BMarkSingleton', 'Category', 'Item', 'TokenHandler', '$mdDialog', '$mdToast', '$http',
+  function( $scp, BMarkSgl, Category, Item, TokenHandler, $mdDialog, $mdToast, $http ) {
 
   $scp.title = "haha";
   $scp.data = [];
   $scp.data = BMarkSgl.getData();
+  $scp.token = {};
 
   /*
    * Add a category
@@ -205,8 +206,22 @@ app.controller( 'BookmarkController', [ '$scope', 'BMarkSingleton', 'Category', 
       clickOutsideToClose:true,
 
     })
-    .then( function(key) {
-      console.log("saving... with key: " + key);
+    .then( function(acc) {
+      console.log("saving... with acc: " + acc.id + " " + acc.password) ;
+      var account = {
+          email: acc.id,
+          password: acc.password
+      };
+      $http.post("/authenticate", account)
+      .then(function(response) {
+          //First function handles success
+          $scp.token = response.data.token;
+          console.log(response.data.message + "\nToken: " + $scp.token);
+
+      }, function(response) {
+          //Second function handles error
+          console.log("Status: " + response.data.message);
+      });
 
   		$mdToast.show(
   		  $mdToast.simple()
@@ -320,13 +335,16 @@ function editItemCtrl( $scope, $mdDialog, $mdToast, item ) {
     }
 }
 
-function saveCtrl ( $scope, $mdDialog, $mdToast) {
-    $scope.ukey = '';
+function saveCtrl ( $scope, $mdDialog, $mdToast, $http) {
+    $scope.acc = {
+      id: '',
+      password: ''
+    };
     $scope.cancel = function (){
         $mdDialog.cancel();
     }
     $scope.save = function(){
-        $mdDialog.hide($scope.ukey);
+        $mdDialog.hide($scope.acc);
     }
 }
 
@@ -413,4 +431,28 @@ app.factory( 'Item', [ function() {
   }
 
   return Item;
+}]);
+
+app.factory( 'TokenHandler',  [ function($http) {
+
+    function TokenHandler (data) {
+      this.token = _dflt( data, 'token', 'No token' );
+    }
+
+    var methods =  TokenHandler.prototype;
+
+    methods.authenticate = function (acc) {
+      $http.post("/authenticate", acc)
+      .then(function(response) {
+          //First function handles success
+          this.token = response.token;
+          console.log(response.message + " Token: " + response.token);
+
+      }, function(response) {
+          //Second function handles error
+          console.log(response.message);
+
+      });
+    }
+    return TokenHandler;
 }]);

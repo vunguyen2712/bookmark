@@ -12,7 +12,7 @@ app.controller( 'BookmarkController', [ '$scope', 'BMarkSingleton', 'Category', 
 
   $scp.title = "haha";
   $scp.data = [];
-  $scp.data = BMarkSgl.getData();
+  // $scp.data = BMarkSgl.getData();
   $scp.token = {};
 
   /*
@@ -288,15 +288,50 @@ app.controller( 'BookmarkController', [ '$scope', 'BMarkSingleton', 'Category', 
        .then(function(response) {
            //First function handles success
            $scp.token = response.data.token;
-           console.log(response.data.message + "\nToken: " + $scp.token);
+           console.log("\nToken: " + $scp.token);
+           // load all date to the UI
+           $http({
+             method: 'GET',
+             url: '/category',
+             headers: {'x-access-token': $scp.token}
+            })
+           .then(function (response){
+             console.log("status: " + response.data.status + "\n");
+             var cateArray = response.data.message;
+             for (var i = 0; i <  cateArray.length; ++i){
+                 console.log("cate name: " + cateArray[i].name + " cate des: " + cateArray[i].description);
+                 $scp.data.push( new Category({
+                   name: cateArray[i].name,
+                   description: cateArray[i].description,
+                   items: cateArray[i].items
+                 }));
+             }
+             // show message
+             $mdToast.show(
+                $mdToast.simple()
+                  .content( 'All has been loaded successfully!' )
+                  .position( 'top right' )
+                  .hideDelay( 3000 )
+              );
+            }, function(response) {
+                //Second function handles error
+                console.log("Status: " + response.data.message);
+                // show message
+                $mdToast.show(
+                  $mdToast.simple()
+                    .content( 'Failed to load your data!' )
+                    .position( 'top right' )
+                    .hideDelay( 3000 )
+                );
+             }); // end of get category
 
            // show message
-           $mdToast.show(
-        		  $mdToast.simple()
-        		    .content( 'All has been loaded successfully!' )
-        		    .position( 'top right' )
-        		    .hideDelay( 3000 )
-        		);
+          //  $mdToast.show(
+        	// 	  $mdToast.simple()
+        	// 	    .content( 'All has been loaded successfully!' )
+        	// 	    .position( 'top right' )
+        	// 	    .hideDelay( 3000 )
+        	// 	);
 
        }, function(response) {
            //Second function handles error

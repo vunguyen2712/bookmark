@@ -29,16 +29,42 @@ app.controller( 'BookmarkController', [ '$scope', 'BMarkSingleton', 'Category', 
       clickOutsideToClose:true
     })
     .then(function( cate ) {
-      $scp.data.push( new Category({
-        title: cate.name
-      }));
 
-  		$mdToast.show(
-  		  $mdToast.simple()
-  		    .content( 'Your category has been added!' )
-  		    .position( 'top right' )
-  		    .hideDelay( 3000 )
-  		);
+      var newCate = new Category({
+        name: cate.name,
+        description: cate.description
+      });
+
+      $scp.data.push( newCate );
+
+      console.log("adding cate... cateName: " + cate.name + " des: " + cate.description) ;
+
+      $http({
+        method: 'POST',
+        url: '/category',
+        data: newCate,
+        headers: {'x-access-token': $scp.token}
+       })
+      .then(function(response) {
+          //First function handles success
+          console.log(response.data.message + "\nToken: " + $scp.token);
+          $mdToast.show(
+      		  $mdToast.simple()
+      		    .content( 'Your category has been added!' )
+      		    .position( 'top right' )
+      		    .hideDelay( 3000 )
+      		);
+
+      }, function(response) {
+          //Second function handles error
+          console.log("Status: " + response.data.message);
+          $mdToast.show(
+      		  $mdToast.simple()
+      		    .content( 'Failed to add category!' )
+      		    .position( 'top right' )
+      		    .hideDelay( 3000 )
+      		);
+      });
 
     }, function() { // cancel goes here
         console.log( 'You cancelled the dialog.' );

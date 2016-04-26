@@ -51,7 +51,7 @@
         <md-list flex="">
           <gr ng-repeat="cate in data">
             <bm-subheader layout="row">
-              <span> {{ cate.title | bmCapital }} ({{cate.items.length}})
+              <span> {{ cate.name | bmCapital }} ({{cate.items.length}})
                 <md-button class="md-icon-button" ng-click="cate.__expand = !cate.__expand" ng-show="cate.__expand" ng-animate=" 'animate' " aria-label="Expand Less Button">
                   <md-icon class="material-icons md-light md-48"> expand_less </md-icon>
                 </md-button>

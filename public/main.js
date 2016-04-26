@@ -28,9 +28,9 @@ app.controller( 'BookmarkController', [ '$scope', 'BMarkSingleton', 'Category', 
       targetEvent: ev,
       clickOutsideToClose:true
     })
-    .then(function( cateTitle ) {
+    .then(function( cate ) {
       $scp.data.push( new Category({
-        title: cateTitle
+        title: cate.name
       }));
 
   		$mdToast.show(
@@ -118,7 +118,7 @@ app.controller( 'BookmarkController', [ '$scope', 'BMarkSingleton', 'Category', 
       targetEvent: ev,
       clickOutsideToClose:true,
       locals: {
-        cateTitle: cate.title
+        cateTitle: cate.name
       },
     })
     .then( function() {
@@ -147,11 +147,11 @@ app.controller( 'BookmarkController', [ '$scope', 'BMarkSingleton', 'Category', 
       targetEvent: ev,
       clickOutsideToClose:true,
       locals:{
-        cateTitle: cate.title
+        cateTitle: cate.name
       }
     })
     .then( function(newTitle) {
-      cate.title = newTitle;
+      cate.name = newTitle;
   		$mdToast.show(
   		  $mdToast.simple()
   		    .content( 'Your category name has been successfully changed!' )
@@ -212,7 +212,10 @@ app.controller( 'BookmarkController', [ '$scope', 'BMarkSingleton', 'Category', 
           email: acc.id,
           password: acc.password
       };
-      $http.post("/authenticate", account)
+      var config = {
+        'x-access-token': $scp.token
+      }
+      $http.post("/authenticate", account, config)
       .then(function(response) {
           //First function handles success
           $scp.token = response.data.token;
@@ -247,15 +250,39 @@ app.controller( 'BookmarkController', [ '$scope', 'BMarkSingleton', 'Category', 
        clickOutsideToClose:true,
 
      })
-     .then( function(key) {
-       console.log("loading... with key: " + key);
+     .then( function( acc ) {
+       console.log("loading... with ID: " + acc.id + " password: " + acc.password);
 
-   		$mdToast.show(
-   		  $mdToast.simple()
-   		    .content( 'All has been loaded!' )
-   		    .position( 'top right' )
-   		    .hideDelay( 3000 )
-   		);
+       var account = {
+           email: acc.id,
+           password: acc.password
+       };
+
+       $http.post("/authenticate", account)
+       .then(function(response) {
+           //First function handles success
+           $scp.token = response.data.token;
+           console.log(response.data.message + "\nToken: " + $scp.token);
+
+           // show message
+           $mdToast.show(
+        		  $mdToast.simple()
+        		    .content( 'All has been loaded successfully!' )
+        		    .position( 'top right' )
+        		    .hideDelay( 3000 )
+        		);
+
+       }, function(response) {
+           //Second function handles error
+           console.log("Status: " + response.data.message);
+           // show message
+           $mdToast.show(
+        		  $mdToast.simple()
+        		    .content( 'Failed to load your data!' )
+        		    .position( 'top right' )
+        		    .hideDelay( 3000 )
+        		);
+       });
 
      }, function() {
          console.log( 'You cancelled the dialog.' );
@@ -265,11 +292,15 @@ app.controller( 'BookmarkController', [ '$scope', 'BMarkSingleton', 'Category', 
 }]);
 
 function addCateCtrl( $scope, $mdDialog, $mdToast ) {
+    $scope.cate = {
+      name: '',
+      description: ''
+    }
     $scope.cancel = function (){
         $mdDialog.cancel();
     }
     $scope.add = function( answer ){
-        $mdDialog.hide( $scope.title );
+        $mdDialog.hide( $scope.cate );
     }
 }
 
@@ -349,12 +380,15 @@ function saveCtrl ( $scope, $mdDialog, $mdToast, $http) {
 }
 
 function loadCtrl ( $scope, $mdDialog, $mdToast) {
-    $scope.ukey = '';
+    $scope.acc = {
+      id: '',
+      password: ''
+    };
     $scope.cancel = function (){
         $mdDialog.cancel();
     }
     $scope.load = function(){
-        $mdDialog.hide($scope.ukey);
+        $mdDialog.hide($scope.acc);
     }
 }
 
@@ -371,13 +405,15 @@ app.factory( 'BMarkSingleton', [ 'Category', 'Item',
     var data = [];
 
     var cate1 = new Category({
-      title: 'Music',
+      name: 'Music',
+      description: 'about Music',
       id: '1',
       __expand: false
     });
 
     var cate2 = new Category({
-      title: 'Math',
+      name: 'Math',
+      description: 'about Math',
       id: '2',
       __expand: false
     })
@@ -407,7 +443,8 @@ app.factory( 'BMarkSingleton', [ 'Category', 'Item',
 app.factory( 'Category', [ function() {
 
   function Category( data ) {
-    this.title = _dflt( data, 'title', 'No title' );
+    this.name = _dflt( data, 'name', 'No name' );
+    this.description = _dflt( data, 'description', 'No description' );
     this.id = _dflt( data, 'id', '' );
     this.items = [];
     this.__expand = _dflt( data, '__expand', false );

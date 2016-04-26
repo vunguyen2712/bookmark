@@ -1,9 +1,13 @@
 <md-dialog aria-label="Mango (Fruit)">
-	<md-content class="md-padding">
+	<md-content class="md-padding" layout="column">
 			<h3> Add a category </h3>
 			<md-input-container flex>
-				<label>Category Name</label>
-				<input ng-model="title" placeholder="Enter category name">
+				<label>Name</label>
+				<input ng-model="name" placeholder="Category name">
+			</md-input-container>
+			<md-input-container flex>
+				<label>Description</label>
+				<input ng-model="description" placeholder="Category description">
 			</md-input-container>
 	</md-content>
 	<div class="md-dialog-actions" layout="row">

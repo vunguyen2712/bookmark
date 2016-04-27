@@ -87,17 +87,42 @@ app.controller( 'BookmarkController', [ '$scope', 'BMarkSingleton', 'Category', 
     })
     .then( function( item ) {
 
-      cate.add(new Item({
-        title: item.title,
-        url: item.url
-      }));
+        cate.add(new Item({
+          title: item.title,
+          url: item.url
+        }));
 
-  		$mdToast.show(
-  		  $mdToast.simple()
-  		    .content( 'Your item has been added!' )
-  		    .position( 'top right' )
-  		    .hideDelay( 3000 )
-  		);
+        $http({
+          method: 'PUT',
+          url: '/category/' + cate._id,
+          data: {
+                    name: cate.name,
+                    description: cate.description,
+                    items: cate.items,
+                    token: $scp.token
+                },
+
+         })
+        .then(function (response){
+          console.log("Message: " + response.data.message + "\n");
+          // show message
+          $mdToast.show(
+             $mdToast.simple()
+               .content( 'Add item successfully!' )
+               .position( 'top right' )
+               .hideDelay( 3000 )
+           );
+         }, function(response) {
+             //Second function handles error
+             console.log("Message: " + response.data.message);
+             // show message
+             $mdToast.show(
+               $mdToast.simple()
+                 .content( 'Failed to add new item!' )
+                 .position( 'top right' )
+                 .hideDelay( 3000 )
+             );
+          }); // end of replacing this catetory when adding an item
 
     }, function() { // cancel goes here
         console.log( 'You cancelled the dialog.' );
@@ -295,17 +320,29 @@ app.controller( 'BookmarkController', [ '$scope', 'BMarkSingleton', 'Category', 
              url: '/category',
              headers: {'x-access-token': $scp.token}
             })
-           .then(function (response){
+           .then(function ( response ){
+
+             console.log( response );
+
              console.log("status: " + response.data.status + "\n");
              var cateArray = response.data.message;
+             $scp.data = [];
+
              for (var i = 0; i <  cateArray.length; ++i){
-                 console.log("cate name: " + cateArray[i].name + " cate des: " + cateArray[i].description);
-                 $scp.data.push( new Category({
-                   name: cateArray[i].name,
-                   description: cateArray[i].description,
-                   items: cateArray[i].items
-                 }));
+                var myCate = cateArray[i];
+                var new_cate = new Category({
+                  _id: myCate._id,
+                  name: myCate.name,
+                  description: myCate.description
+                });
+
+                for(var j = 0; j < myCate.items.length; ++j) {
+                  var curItem = myCate.items[j];
+                  new_cate.add( new Item(curItem));
+                }
+               $scp.data.push( new_cate );
              }
+
              // show message
              $mdToast.show(
                 $mdToast.simple()
@@ -313,6 +350,7 @@ app.controller( 'BookmarkController', [ '$scope', 'BMarkSingleton', 'Category', 
                   .position( 'top right' )
                   .hideDelay( 3000 )
               );
+
             }, function(response) {
                 //Second function handles error
                 console.log("Status: " + response.data.message);
@@ -504,9 +542,9 @@ app.factory( 'BMarkSingleton', [ 'Category', 'Item',
 app.factory( 'Category', [ function() {
 
   function Category( data ) {
+    this._id = _dflt( data, '_id', '' );
     this.name = _dflt( data, 'name', 'No name' );
     this.description = _dflt( data, 'description', 'No description' );
-    this.id = _dflt( data, 'id', '' );
     this.items = [];
     this.__expand = _dflt( data, '__expand', false );
   }
@@ -524,7 +562,7 @@ app.factory( 'Item', [ function() {
 
   function Item( data ) {
     this.title = _dflt( data, 'title', 'No title' );
-    this.id = _dflt( data, 'id', '' );
+    this._id = _dflt( data, '_id', '' );
     this.url = _dflt( data, 'url', '' );
   }
 

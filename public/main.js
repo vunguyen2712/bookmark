@@ -35,9 +35,7 @@ app.controller( 'BookmarkController', [ '$scope', 'BMarkSingleton', 'Category', 
         description: cate.description
       });
 
-      $scp.data.push( newCate );
-
-      console.log("adding cate... cateName: " + cate.name + " des: " + cate.description) ;
+      // console.log("adding cate... cateName: " + cate.name + " des: " + cate.description) ;
 
       $http({
         method: 'POST',
@@ -48,12 +46,27 @@ app.controller( 'BookmarkController', [ '$scope', 'BMarkSingleton', 'Category', 
       .then(function(response) {
           //First function handles success
           console.log(response.data.message + "\nToken: " + $scp.token);
-          $mdToast.show(
-      		  $mdToast.simple()
-      		    .content( 'Your category has been added!' )
-      		    .position( 'top right' )
-      		    .hideDelay( 3000 )
-      		);
+
+          if (response.data.status == 'SUCCESS'){
+
+            $scp.data.push( newCate );
+            $mdToast.show(
+        		  $mdToast.simple()
+        		    .content( 'Your category has been added!' )
+        		    .position( 'top right' )
+        		    .hideDelay( 3000 )
+        		);
+
+          } else {
+
+            $mdToast.show(
+        		  $mdToast.simple()
+        		    .content( 'Failed to add category! Please make sure to click \"Load\" first.' )
+        		    .position( 'top right' )
+        		    .hideDelay( 3000 )
+        		);
+
+          }
 
       }, function(response) {
           //Second function handles error
@@ -87,10 +100,10 @@ app.controller( 'BookmarkController', [ '$scope', 'BMarkSingleton', 'Category', 
     })
     .then( function( item ) {
 
-        cate.add(new Item({
-          title: item.title,
-          url: item.url
-        }));
+        // cate.add(new Item({
+        //   title: item.title,
+        //   url: item.url
+        // }));
 
         console.log (cate._id);
 
@@ -100,22 +113,14 @@ app.controller( 'BookmarkController', [ '$scope', 'BMarkSingleton', 'Category', 
           data: {
                     name: cate.name,
                     description: cate.description,
-                    items: cate.items,
+                    // items: cate.items,
                     token: $scp.token
                 },
-          headers: {
-            'Accept': 'application/json'
-          }
 
          })
         .then(function (response){
+
           console.log(response);
-
-          // cate.add(new Item ({
-          //   title: item.title,
-          //   url: item.url
-          // }))
-
           // show message
           $mdToast.show(
              $mdToast.simple()

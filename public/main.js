@@ -92,6 +92,8 @@ app.controller( 'BookmarkController', [ '$scope', 'BMarkSingleton', 'Category', 
           url: item.url
         }));
 
+        console.log (cate._id);
+
         $http({
           method: 'PUT',
           url: '/category/' + cate._id,
@@ -101,10 +103,19 @@ app.controller( 'BookmarkController', [ '$scope', 'BMarkSingleton', 'Category', 
                     items: cate.items,
                     token: $scp.token
                 },
+          headers: {
+            'Accept': 'application/json'
+          }
 
          })
         .then(function (response){
-          console.log("Message: " + response.data.message + "\n");
+          console.log(response);
+
+          // cate.add(new Item ({
+          //   title: item.title,
+          //   url: item.url
+          // }))
+
           // show message
           $mdToast.show(
              $mdToast.simple()
@@ -114,7 +125,7 @@ app.controller( 'BookmarkController', [ '$scope', 'BMarkSingleton', 'Category', 
            );
          }, function(response) {
              //Second function handles error
-             console.log("Message: " + response.data.message);
+             console.log(response);
              // show message
              $mdToast.show(
                $mdToast.simple()
@@ -322,9 +333,8 @@ app.controller( 'BookmarkController', [ '$scope', 'BMarkSingleton', 'Category', 
             })
            .then(function ( response ){
 
-             console.log( response );
-
-             console.log("status: " + response.data.status + "\n");
+            //  console.log( response );
+            //  console.log("status: " + response.data.status + "\n");
              var cateArray = response.data.message;
              $scp.data = [];
 

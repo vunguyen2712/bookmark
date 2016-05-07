@@ -100,45 +100,56 @@ app.controller( 'BookmarkController', [ '$scope', 'BMarkSingleton', 'Category', 
     })
     .then( function( item ) {
 
-        // cate.add(new Item({
-        //   title: item.title,
-        //   url: item.url
-        // }));
+          console.log(cate);
 
-        console.log (cate._id);
+          var tempItemList = [];
+          for (var i = 0; i < cate.items.length; ++i){
+            var currentItem = cate.items[i];
+            tempItemList.push(new Item(currentItem));
+          }
+          tempItemList.push(new Item({
+            title: item.title,
+            url: item.url
+          }));
 
-        $http({
-          method: 'PUT',
-          url: '/category/' + cate._id,
-          data: {
-                    name: cate.name,
-                    description: cate.description,
-                    // items: cate.items,
-                    token: $scp.token
-                },
+          console.log('tempItemList = ' + tempItemList);
+          console.log ('cate id: ' + cate._id);
 
-         })
-        .then(function (response){
+          $http({
+            method: 'PUT',
+            url: '/category/' + cate._id,
+            data: {
+                      name: cate.name,
+                      description: cate.description,
+                      items: tempItemList,
+                      token: $scp.token
+                  },
 
-          console.log(response);
-          // show message
-          $mdToast.show(
-             $mdToast.simple()
-               .content( 'Add item successfully!' )
-               .position( 'top right' )
-               .hideDelay( 3000 )
-           );
-         }, function(response) {
-             //Second function handles error
-             console.log(response);
-             // show message
-             $mdToast.show(
-               $mdToast.simple()
-                 .content( 'Failed to add new item!' )
-                 .position( 'top right' )
-                 .hideDelay( 3000 )
-             );
-          }); // end of replacing this catetory when adding an item
+           })
+          .then(function (response){
+              //First function handles success
+
+              // update UI data
+
+              console.log(response);
+              // show message
+              $mdToast.show(
+                 $mdToast.simple()
+                   .content( 'Add item successfully!' )
+                   .position( 'top right' )
+                   .hideDelay( 3000 )
+               );
+           }, function(response) {
+                 //Second function handles error
+                 console.log(response);
+                 // show message
+                 $mdToast.show(
+                   $mdToast.simple()
+                     .content( 'Failed to add new item!' )
+                     .position( 'top right' )
+                     .hideDelay( 3000 )
+                 );
+            }); // end of replacing this catetory when adding an item
 
     }, function() { // cancel goes here
         console.log( 'You cancelled the dialog.' );
@@ -189,14 +200,55 @@ app.controller( 'BookmarkController', [ '$scope', 'BMarkSingleton', 'Category', 
       },
     })
     .then( function() {
-      $scp.data.splice(index, 1);
 
-  		$mdToast.show(
-  		  $mdToast.simple()
-  		    .content( 'Your category has been successfully deleted!' )
-  		    .position( 'top right' )
-  		    .hideDelay( 3000 )
-  		);
+        $http({
+          method: 'PUT',
+          url: '/category/' + cate._id,
+          data: {
+                    // name: cate.name,
+                    // description: cate.description,
+                    // items: cate.items,
+                    token: $scp.token
+                },
+
+         })
+        .then(function (response){
+          //First function handles successful request
+
+          console.log(response);
+          if ( response.data.status == 'SUCCESS') {
+              // update data on front-end
+              $scp.data.splice(index, 1);
+              // show message
+              $mdToast.show(
+          		  $mdToast.simple()
+          		    .content( 'Your category has been successfully deleted!' )
+          		    .position( 'top right' )
+          		    .hideDelay( 3000 )
+          		);
+          } else {
+
+              $mdToast.show(
+                $mdToast.simple()
+                  .content( 'Failed to delete a category!' )
+                  .position( 'top right' )
+                  .hideDelay( 3000 )
+              );
+
+          }
+
+         }, function(response) {
+             //Second function handles error
+
+             console.log(response);
+             // show message
+             $mdToast.show(
+               $mdToast.simple()
+                 .content( 'Failed to delete a category!' )
+                 .position( 'top right' )
+                 .hideDelay( 3000 )
+             );
+          }); // end of PUT request
 
     }, function() {
         console.log( 'You cancelled the dialog.' );
@@ -419,7 +471,7 @@ function addCateCtrl( $scope, $mdDialog, $mdToast ) {
 }
 
 function addItemCtrl( $scope, $mdDialog, $mdToast, cate, Item ) {
-    $scope.cate = cate;
+    //$scope.cate = cate;
     $scope.item = {
       title: '',
       url: ''

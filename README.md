@@ -2,6 +2,10 @@
 
 Save and store all your bookmarks with their descriptions.
 
+![alt tag](http://s32.postimg.org/pjc017wat/bookmark1.png)
+
+![alt tag](http://s32.postimg.org/pjc017wat/bookmark2.png)
+
 # Installation
 
 1. Install MongoDB
